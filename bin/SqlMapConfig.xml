@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 和spring整合后 environments配置将废除-->
+	<environments default="ammy">
+		
+		<environment id="ammy">
+		<!-- 使用jdbc事务管理,事務控制由mybatis管理-->
+			<transactionManager type="JDBC" />
+		<!-- 数据库连接池，由mybatis管理-->
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/ammy?characterEncoding=utf-8" />
+				<property name="username" value="root" />
+				<property name="password" value="xf07041118" />
+			</dataSource>
+		</environment>
+		
+		<environment id="baoxina">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://localhost:3306/baoxina?characterEncoding=utf-8" />
+				<property name="username" value="root" />
+				<property name="password" value="xf07041118" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	
+	<!-- 加载映射文件 -->
+	<mappers>
+		<mapper resource="sqlmap/User.xml"/>
+		<mapper resource="com/baoxina/mybatis/junior/mapper/UserMapper.xml"/>
+	</mappers>
+	
+</configuration>

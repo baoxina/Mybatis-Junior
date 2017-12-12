@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 配置文件元素一览 -->
+	<!-- 
+		properties（属性）						=====================> 加载属性文件，设置全局属性
+		settings（全局配置参数）					=====================> 设置全局配置参数(运行时可以调整一些运行参数，配置性能优化，如开启二级缓存、开启延迟加载等)
+		typeAliases（类型别名）					=====================> 针对parameterType或resultType指定的类型定义一些别名,基本类型的有默认的别名，pojo类型的别名需要自行定义
+		typeHandlers（类型处理器）				=====================> jdbc类型和java类型的转换(输入参数是String，转换为Jdbc类型是char或varchar)处理器，通常情况下，mybatis提供的类型处理器满足日常需要，不需要自定义
+		objectFactory（对象工厂）				=====================> 一般不用，Mybatis与Spring集成之后，会废弃掉
+		plugins（插件）						=====================> 一般不用，Mybatis与Spring集成之后，会废弃掉 
+		environments（环境集合属性对象）			=====================> Mybatis与Spring集成之后，会废弃掉
+			environment（环境子属性对象）				=====================> 
+				transactionManager（事务管理）			=====================> 
+				dataSource（数据源）					=====================> 
+		mappers（映射器） 						=====================> 
+	-->
+
+	<!-- 引用并加载属性文件 -->
+	<properties resource="db.properties">
+		<!-- 子标签内的属性优先级低于db.properties文件内的属性，子标签内的属性会被properties文件内的同名属性覆盖 -->
+		<!-- 建议不用property子标签定义属性 -->
+		<!-- <property name="jdbc.driver" value="aaa"/> -->
+	</properties>
+	
+	<!-- 设置全局配置参数 -->
+	<settings>
+		<setting name="" value=""/>
+	</settings>
+	
+	<!-- parameterType或resultType 指定类型的别名定义 -->
+	<typeAliases>
+		<!-- 单个类型的别名定义方式 -->
+		<typeAlias type="com.baoxina.mybatis.junior.po.User" alias="user"/>
+		<!-- 批量别名的定义方式 : 指定包名，mybatis自动扫描包中的po类，自动定义别名，别名就是类名（首字母大写或者小写都可以）-->
+		<package name="com.baoxina.mybatis.junior.po"/>
+		
+	</typeAliases>
+	
+	<!-- 对象工厂 -->
+	<objectFactory type="">
+		<property name="" value=""/>
+	</objectFactory>
+	
+	<!-- 插件 -->
+	<plugins>
+		<plugin interceptor=""></plugin>
+	</plugins>
+	
+	<!-- 和spring整合后 environments配置将废除-->
+	<environments default="ammy">
+		<environment id="ammy">
+			<!-- 使用jdbc事务管理,事務控制由mybatis管理-->
+			<transactionManager type="JDBC" />
+			<!-- 数据库连接池，由mybatis管理-->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}"/>
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 加载映射文件 -->
+	<mappers>
+		<!-- 方式1.通过设置resource属性的形式一次加载一个映射文件 -->
+		<mapper resource="com/baoxina/mybatis/junior/mapper/UserMapper.xml"/>
+		<!-- 方式2.通过【mapper接口】     加载     【mapper映射文件】 ，在使用【mapper代理方式】的前提下，需要遵循以下规范-->
+		<!-- 需要将mapper接口类名和mapper.xml映射文件名称保持一致，且在同一个目录下 -->
+		<mapper class="com.baoxina.mybatis.junior.mapper.UserMapper"/>
+		<!-- 方式3(推荐使用).通过扫描包路径下的所有mapper接口,批量加载mapper.xml 。该方式 在使用【mapper代理方式】的前提下，需要遵循以下规范-->
+		<!-- 需要将mapper接口类名和mapper.xml映射文件名称保持一致，且在同一个目录下 -->
+		<package name="com.baoxina.mybatis.junior.mapper"/>
+	</mappers>
+	
+</configuration>
